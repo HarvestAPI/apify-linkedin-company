@@ -65,9 +65,7 @@ export function createHarvestApiScraper({ concurrency }: { concurrency: number }
           await Actor.pushData(response?.element);
 
           console.info(
-            `Scraped item#${index + 1} ${JSON.stringify(query)}. Elapsed: ${(
-              elapsed / 1000
-            ).toFixed(2)}s. Progress: ${processedCounter}/${total}`,
+            `Scraped item#${index + 1} ${JSON.stringify(query)}. Progress: ${processedCounter}/${total}`,
           );
         } else {
           console.error(
