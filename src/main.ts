@@ -36,7 +36,7 @@ const promises = input.companies.map((query, index) => {
   return scraper.addJob({
     query: { search: query },
     index,
-    total: input.companies.length,
+    total: input.companies?.length || 0,
   });
 });
 
