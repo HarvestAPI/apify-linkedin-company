@@ -1,0 +1,19 @@
+{
+  "title": "Search LinkedIn Companies",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "companies": {
+      "title": "Company URLs or names (to search)",
+      "type": "array",
+      "editor": "stringList",
+      "description": "List of LinkedIn profile URLs or Public Identifiers (last part in the URL) to scrape.",
+      "prefill": [
+        "https://www.linkedin.com/company/google",
+        "https://www.linkedin.com/company/microsoft",
+        "Netflix",
+        "Oracle Corp"
+      ]
+    }
+  }
+}
