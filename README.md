@@ -5,7 +5,7 @@ Our powerful tool helps you search and scrape LinkedIn Companies without comprom
 ### Key Benefits
 
 - No cookies or account required: Access company data without sharing cookies or risking account restrictions
-- Low pricing: $2 per 1k companies.
+- Low pricing: $4 per 1k companies.
 - Fast response times deliver data in seconds
 - No caching, fresh data.
 - Concurrency: each actor works scraping 6 companies at a time.
