@@ -64,13 +64,14 @@ export async function createHarvestApiScraper({ concurrency }: { concurrency: nu
           delete response.error.user;
           delete response.error.credits;
         }
+        delete response.query;
 
         const elapsed = new Date().getTime() - timestamp.getTime();
         processedCounter++;
 
         if (response.element?.id) {
           scrapedCounter++;
-          await Actor.pushData(response?.element);
+          await Actor.pushData(response);
 
           console.info(
             `Scraped item#${index + 1} ${JSON.stringify(query)}. Elapsed: ${elapsed}ms. Progress: ${processedCounter}/${total}`,
