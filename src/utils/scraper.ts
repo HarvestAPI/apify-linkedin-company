@@ -3,10 +3,14 @@ import { createConcurrentQueues } from './queue.js';
 
 const { actorId, actorRunId, actorBuildId, userId, actorMaxPaidDatasetItems, memoryMbytes } =
   Actor.getEnv();
+const client = Actor.newClient();
 
-export function createHarvestApiScraper({ concurrency }: { concurrency: number }) {
+export async function createHarvestApiScraper({ concurrency }: { concurrency: number }) {
   let processedCounter = 0;
   let scrapedCounter = 0;
+  const user = userId ? await client.user(userId).get() : null;
+  const cm = Actor.getChargingManager();
+  const pricingInfo = cm.getPricingInfo();
 
   return {
     addJob: createConcurrentQueues(
@@ -42,6 +46,10 @@ export function createHarvestApiScraper({ concurrency }: { concurrency: number }
             'x-apify-actor-build-id': actorBuildId!,
             'x-apify-memory-mbytes': String(memoryMbytes),
             'x-apify-actor-max-paid-dataset-items': String(actorMaxPaidDatasetItems) || '0',
+            'x-apify-username': user?.username || '',
+            'x-apify-user-is-paying': (user as Record<string, any> | null)?.isPaying,
+            'x-apify-max-total-charge-usd': String(pricingInfo.maxTotalChargeUsd),
+            'x-apify-is-pay-per-event': String(pricingInfo.isPayPerEvent),
           },
         })
           .then((response) => response.json())
@@ -65,7 +73,7 @@ export function createHarvestApiScraper({ concurrency }: { concurrency: number }
           await Actor.pushData(response?.element);
 
           console.info(
-            `Scraped item#${index + 1} ${JSON.stringify(query)}. Progress: ${processedCounter}/${total}`,
+            `Scraped item#${index + 1} ${JSON.stringify(query)}. Elapsed: ${elapsed}ms. Progress: ${processedCounter}/${total}`,
           );
         } else {
           console.error(

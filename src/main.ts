@@ -28,7 +28,7 @@ if (!input.companies?.length) {
   process.exit(0);
 }
 
-const scraper = createHarvestApiScraper({
+const scraper = await createHarvestApiScraper({
   concurrency: 6,
 });
 
