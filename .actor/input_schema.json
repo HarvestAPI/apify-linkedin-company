@@ -18,7 +18,7 @@
     "location": {
       "title": "Location Filter (if search by company name)",
       "type": "string",
-      "editor": "text",
+      "editor": "textfield",
       "description": "Location to filter companies by. If empty, all locations will be considered."
     }
   }
