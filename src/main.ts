@@ -15,6 +15,7 @@ await Actor.init();
 
 interface Input {
   companies?: string[];
+  location?: string;
 }
 
 // Structure of input is defined in input_schema.json
@@ -34,7 +35,7 @@ const scraper = await createHarvestApiScraper({
 
 const promises = input.companies.map((query, index) => {
   return scraper.addJob({
-    query: { search: query },
+    query: { search: query, location: input.location || '' },
     index,
     total: input.companies?.length || 0,
   });
