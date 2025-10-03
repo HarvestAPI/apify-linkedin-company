@@ -5,7 +5,13 @@ const { actorId, actorRunId, actorBuildId, userId, actorMaxPaidDatasetItems, mem
   Actor.getEnv();
 const client = Actor.newClient();
 
-export async function createHarvestApiScraper({ concurrency }: { concurrency: number }) {
+export async function createHarvestApiScraper({
+  concurrency,
+  state,
+}: {
+  concurrency: number;
+  state: { scrapedItems: string[] };
+}) {
   let processedCounter = 0;
   let scrapedCounter = 0;
   const user = userId ? await client.user(userId).get() : null;
@@ -74,6 +80,9 @@ export async function createHarvestApiScraper({ concurrency }: { concurrency: nu
           response.element.originalQuery = response.originalQuery;
           response.element.requestId = response.requestId;
           await Actor.pushData(response.element);
+
+          state.scrapedItems.push(query.search);
+          await Actor.setValue('crawling-state', state);
 
           console.info(
             `Scraped item#${index + 1} ${JSON.stringify(query)}. Elapsed: ${elapsed}ms. Progress: ${processedCounter}/${total}`,

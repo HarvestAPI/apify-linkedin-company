@@ -26,20 +26,38 @@ input.companies = (input.companies || []).filter((q) => q && !!q.trim());
 if (!input.companies?.length) {
   console.error('No companies provided!');
   await Actor.exit();
-  process.exit(0);
 }
 
-const scraper = await createHarvestApiScraper({
-  concurrency: 6,
+const client = Actor.newClient();
+const { userId } = Actor.getEnv();
+const user = userId ? await client.user(userId).get() : null;
+const isPaying = (user as Record<string, any> | null)?.isPaying === false ? false : true;
+
+const state: {
+  scrapedItems: string[];
+} = (await Actor.getValue('crawling-state')) || {
+  scrapedItems: [],
+};
+
+Actor.on('migrating', async () => {
+  await Actor.setValue('crawling-state', state);
+  await Actor.reboot();
 });
 
-const promises = input.companies.map((query, index) => {
-  return scraper.addJob({
-    query: { search: query, location: input.location || '' },
-    index,
-    total: input.companies?.length || 0,
-  });
+const scraper = await createHarvestApiScraper({
+  state,
+  concurrency: isPaying ? 16 : 6,
 });
+
+const promises = input.companies
+  .filter((q) => !state.scrapedItems.includes(q))
+  .map((query, index) => {
+    return scraper.addJob({
+      query: { search: query, location: input.location || '' },
+      index,
+      total: input.companies?.length || 0,
+    });
+  });
 
 await Promise.all(promises).catch((error) => {
   console.error(`Error scraping profiles:`, error);
