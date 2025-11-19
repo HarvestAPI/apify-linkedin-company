@@ -231,7 +231,7 @@ Here is the example company output of this actor:
 }
 ```
 
-## Linkedin Company Search API
+## Linkedin Company Data API
 
 The actor stores results in a dataset. You can export data in various formats such as CSV, JSON, XLS, etc. You can scrape and access data on demand using API.
 
