@@ -14,12 +14,6 @@
         "Netflix",
         "Oracle Corp"
       ]
-    },
-    "location": {
-      "title": "Location Filter (if search by company name)",
-      "type": "string",
-      "editor": "textfield",
-      "description": "Location to filter companies by. If empty, all locations will be considered."
     }
   }
 }

@@ -14,6 +14,9 @@ Our powerful tool helps you search and scrape LinkedIn Companies without comprom
 
 - Provide List of LinkedIn company URLs or company names. We will find company URL by name via LinkedIn search.
 
+Note: For finding multiple companies with advanced filters, please use our [Linkedin Company Search Scraper](https://apify.com/harvestapi/linkedin-company-search)  
+Find more Linkedin scraping actors [https://apify.com/harvestapi](https://apify.com/harvestapi)
+
 ### Data You'll Receive
 
 Here is the example company output of this actor:
