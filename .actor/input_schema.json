@@ -4,7 +4,7 @@
   "schemaVersion": 1,
   "properties": {
     "companies": {
-      "title": "Company URLs or names (to search)",
+      "title": "Company LinkedIn URLs",
       "type": "array",
       "editor": "stringList",
       "description": "List of LinkedIn company URLs",
