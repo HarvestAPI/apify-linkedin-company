@@ -15,6 +15,7 @@ await Actor.init();
 
 interface Input {
   companies?: string[];
+  searches?: string[];
   location?: string;
 }
 
@@ -23,9 +24,20 @@ const input = await Actor.getInput<Input>();
 if (!input) throw new Error('Input is missing!');
 
 input.companies = (input.companies || []).filter((q) => q && !!q.trim());
+input.searches = (input.searches || []).filter((q) => q && !!q.trim());
 if (!input.companies?.length) {
   console.error('No companies provided!');
   await Actor.exit();
+}
+for (const company of input.companies) {
+  if (!company.includes('linkedin.com/')) {
+    const errorMsg = `Invalid LinkedIn company URL provided: "${company}". Please provide full LinkedIn company URLs (e.g., https://www.linkedin.com/company/google).`;
+    console.error(errorMsg);
+    await Actor.exit({
+      statusMessage: errorMsg,
+      exitCode: 0,
+    });
+  }
 }
 
 const client = Actor.newClient();
@@ -49,13 +61,13 @@ const scraper = await createHarvestApiScraper({
   concurrency: isPaying ? 16 : 6,
 });
 
-const promises = input.companies
+const promises = [...input.companies, ...input.searches]
   .filter((q) => !state.scrapedItems.includes(q))
   .map((query, index) => {
     return scraper.addJob({
       query: { search: query, location: input.location || '' },
       index,
-      total: input.companies?.length || 0,
+      total: (input.companies?.length || 0) + (input.searches?.length || 0),
     });
   });
 

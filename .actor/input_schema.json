@@ -7,13 +7,20 @@
       "title": "Company URLs or names (to search)",
       "type": "array",
       "editor": "stringList",
-      "description": "List of LinkedIn profile URLs or Public Identifiers (last part in the URL) to scrape.",
+      "description": "List of LinkedIn company URLs",
       "prefill": [
         "https://www.linkedin.com/company/google",
-        "https://www.linkedin.com/company/microsoft",
-        "Netflix",
-        "Oracle Corp"
+        "https://www.linkedin.com/company/microsoft"
       ]
+    },
+    "searches": {
+      "title": "Company names (to search)",
+      "type": "array",
+      "editor": "stringList",
+      "description": "List of company names to search on LinkedIn",
+      "prefill": ["Netflix", "Oracle Corp"],
+      "sectionCaption": "Search Companies",
+      "sectionDescription": "Find companies by text queries. It will scrape the LinkedIn company search web page: https://www.linkedin.com/search/results/companies/?keywords=example - **please note that the LinkedIn search can be inaccurate.**"
     }
   }
 }
