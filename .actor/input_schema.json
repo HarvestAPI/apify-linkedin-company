@@ -18,7 +18,6 @@
       "type": "array",
       "editor": "stringList",
       "description": "List of company names to search on LinkedIn",
-      "prefill": ["Netflix", "Oracle Corp"],
       "sectionCaption": "Search Companies",
       "sectionDescription": "Find companies by text queries. It will scrape the LinkedIn company search web page: https://www.linkedin.com/search/results/companies/?keywords=example - **please note that the LinkedIn search can be inaccurate.**"
     }
