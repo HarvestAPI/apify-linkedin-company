@@ -25,8 +25,10 @@ if (!input) throw new Error('Input is missing!');
 
 input.companies = (input.companies || []).filter((q) => q && !!q.trim());
 input.searches = (input.searches || []).filter((q) => q && !!q.trim());
-if (!input.companies?.length) {
-  console.error('No companies provided!');
+if (!input.companies.length && !input.searches.length) {
+  console.error(
+    'No companies provided to scrape. Please provide at least one LinkedIn company URL or search query.',
+  );
   await Actor.exit();
 }
 for (const company of input.companies) {
