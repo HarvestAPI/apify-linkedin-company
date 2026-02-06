@@ -34,7 +34,7 @@ export async function createHarvestApiScraper({
           console.warn(`Max scraped items reached: ${actorMaxPaidDatasetItems}`);
           return;
         }
-        const params = new URLSearchParams({ ...query });
+        const params = new URLSearchParams({ ...query, scrapePeopleTab: 'true' });
 
         console.info(`Starting item#${index + 1} ${JSON.stringify(query)}...`);
         const timestamp = new Date();
