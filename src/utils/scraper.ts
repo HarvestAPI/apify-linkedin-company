@@ -3,7 +3,7 @@ import { createConcurrentQueues } from './queue.js';
 
 const { actorId, actorRunId, actorBuildId, userId, actorMaxPaidDatasetItems, memoryMbytes } =
   Actor.getEnv();
-const client = Actor.newClient();
+const isPaying = !!process.env.APIFY_USER_IS_PAYING;
 
 export async function createHarvestApiScraper({
   concurrency,
@@ -14,7 +14,6 @@ export async function createHarvestApiScraper({
 }) {
   let processedCounter = 0;
   let scrapedCounter = 0;
-  const user = userId ? await client.user(userId).get() : null;
   const cm = Actor.getChargingManager();
   const pricingInfo = cm.getPricingInfo();
 
@@ -51,11 +50,11 @@ export async function createHarvestApiScraper({
             'x-apify-actor-run-id': actorRunId!,
             'x-apify-actor-build-id': actorBuildId!,
             'x-apify-memory-mbytes': String(memoryMbytes),
-            'x-apify-actor-max-paid-dataset-items': String(actorMaxPaidDatasetItems) || '0',
-            'x-apify-username': user?.username || '',
-            'x-apify-user-is-paying': (user as Record<string, any> | null)?.isPaying,
+            'x-apify-user-is-paying': String(isPaying),
+            'x-apify-user-is-paying-2': process.env.APIFY_USER_IS_PAYING || '',
             'x-apify-max-total-charge-usd': String(pricingInfo.maxTotalChargeUsd),
             'x-apify-is-pay-per-event': String(pricingInfo.isPayPerEvent),
+            'x-apify-actor-max-paid-dataset-items': String(actorMaxPaidDatasetItems) || '0',
           },
         })
           .then((response) => response.json())

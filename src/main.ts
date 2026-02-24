@@ -42,10 +42,7 @@ for (const company of input.companies) {
   }
 }
 
-const client = Actor.newClient();
-const { userId } = Actor.getEnv();
-const user = userId ? await client.user(userId).get() : null;
-const isPaying = (user as Record<string, any> | null)?.isPaying === false ? false : true;
+const isPaying = !!process.env.APIFY_USER_IS_PAYING;
 
 const state: {
   scrapedItems: string[];
