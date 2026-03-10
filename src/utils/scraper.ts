@@ -83,6 +83,10 @@ export async function createHarvestApiScraper({ state }: { state: { scrapedItems
           `Scraped item#${index + 1} ${JSON.stringify(query)}. Elapsed: ${elapsed}ms. Progress: ${processedCounter}/${total}`,
         );
       } else {
+        if (response?.cost && pricingInfo.isPayPerEvent) {
+          await Actor.charge({ eventName: 'company' });
+        }
+
         console.error(
           `Error scraping item#${index + 1} ${JSON.stringify(query)}: ${JSON.stringify(
             typeof response.error === 'object' ? response.error : response,
