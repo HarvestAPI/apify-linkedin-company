@@ -84,7 +84,7 @@ export async function createHarvestApiScraper({ state }: { state: { scrapedItems
         );
       } else {
         if (response?.cost && pricingInfo.isPayPerEvent) {
-          await Actor.charge({ eventName: 'company' });
+          await Actor.charge({ eventName: 'apify-default-dataset-item' });
         }
 
         console.error(
