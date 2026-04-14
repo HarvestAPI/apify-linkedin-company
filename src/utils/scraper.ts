@@ -84,15 +84,22 @@ export async function createHarvestApiScraper({ state }: { state: { scrapedItems
         );
       } else {
         if (response?.cost && pricingInfo.isPayPerEvent) {
-          await Actor.charge({ eventName: 'apify-default-dataset-item' });
+          await Actor.pushData({
+            message: 'Company not found',
+            query,
+            error: response.error,
+            requestId: response.requestId,
+          });
         }
 
         console.error(
-          `Error scraping item#${index + 1} ${JSON.stringify(query)}: ${JSON.stringify(
-            typeof response.error === 'object' ? response.error : response,
-            null,
-            2,
-          )}`,
+          `Error scraping item#${index + 1} ${JSON.stringify(query)}: ${
+            response.error
+              ? response.error
+              : typeof response === 'object'
+                ? JSON.stringify(response)
+                : response
+          }`,
         );
       }
     },
